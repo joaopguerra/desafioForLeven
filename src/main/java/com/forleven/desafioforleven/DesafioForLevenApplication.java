@@ -1,4 +1,4 @@
-package com.forleven.desafioForLeven;
+package com.forleven.desafioforleven;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

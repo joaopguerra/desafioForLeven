@@ -1,11 +1,11 @@
-package com.forleven.desafioForLeven.entities;
+package com.forleven.desafioforleven.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Estudante implements Serializable {
@@ -14,8 +14,14 @@ public class Estudante implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long matricula;
+
     private String nome;
     private String sobrenome;
+
+    @ElementCollection
+    @CollectionTable(name = "telefones")
+    private Set<String> telefones = new HashSet<>();
+
 
     public Estudante() {
     }
@@ -27,14 +33,17 @@ public class Estudante implements Serializable {
     }
 
     public Long getMatricula() {
+
         return matricula;
     }
 
     public void setMatricula(Long matricula) {
+
         this.matricula = matricula;
     }
 
     public String getNome() {
+
         return nome;
     }
 
@@ -48,6 +57,14 @@ public class Estudante implements Serializable {
 
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
+    }
+
+    public Set<String> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(Set<String> telefones) {
+        this.telefones = telefones;
     }
 
     @Override

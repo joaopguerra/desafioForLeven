@@ -1,15 +1,29 @@
-package com.forleven.desafioForLeven.dto;
+package com.forleven.desafioforleven.dto;
 
-import com.forleven.desafioForLeven.entities.Estudante;
+import com.forleven.desafioforleven.entities.Estudante;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EstudanteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long matricula;
+
+    @NotBlank(message = "Insira um nome")
+    @Size(min = 3, max = 100)
     private String nome;
+
+    @NotBlank(message = "Insira um sobrenome")
+    @Size(min = 3, max = 100)
     private String sobrenome;
+
+    private Set<String> telefones = new HashSet<>();
 
     public EstudanteDTO() {
     }
@@ -48,5 +62,13 @@ public class EstudanteDTO implements Serializable {
 
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
+    }
+
+    public Set<String> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(Set<String> telefones) {
+        this.telefones = telefones;
     }
 }

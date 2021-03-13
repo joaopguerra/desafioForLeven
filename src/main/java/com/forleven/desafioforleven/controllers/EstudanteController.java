@@ -1,13 +1,13 @@
-package com.forleven.desafioForLeven.controllers;
+package com.forleven.desafioforleven.controllers;
 
-import com.forleven.desafioForLeven.dto.EstudanteDTO;
-import com.forleven.desafioForLeven.entities.Estudante;
-import com.forleven.desafioForLeven.services.EstudanteService;
+import com.forleven.desafioforleven.dto.EstudanteDTO;
+import com.forleven.desafioforleven.services.EstudanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -25,16 +25,22 @@ public class EstudanteController {
     }
 
     @GetMapping(value = "/{matricula}")
-    public ResponseEntity<EstudanteDTO> findById(@PathVariable Long matricula){
-        Estudante estudante = service.findByMatricula(matricula);
-        return ResponseEntity.ok().body(new EstudanteDTO(estudante));
+    public ResponseEntity<EstudanteDTO> findByMatricula(@PathVariable Long matricula){
+        EstudanteDTO estudanteDTO = service.findByMatricula(matricula);
+        return ResponseEntity.ok().body((estudanteDTO));
     }
 
     @PostMapping
-    public ResponseEntity<EstudanteDTO> insert(@RequestBody EstudanteDTO estudanteDTO) {
+    public ResponseEntity<EstudanteDTO> insert(@Valid @RequestBody EstudanteDTO estudanteDTO) {
         estudanteDTO = service.insert(estudanteDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{matricula}").buildAndExpand(estudanteDTO.getMatricula()).toUri();
         return ResponseEntity.created(uri).body(estudanteDTO);
+    }
+
+    @PutMapping(value = "/{matricula}")
+    public ResponseEntity<EstudanteDTO> update(@PathVariable Long matricula, @RequestBody EstudanteDTO estudanteDTO) {
+        estudanteDTO = service.update(matricula, estudanteDTO);
+        return ResponseEntity.ok().body((estudanteDTO));
     }
 
     @DeleteMapping(value = "/{matricula}")
