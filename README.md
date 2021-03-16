@@ -20,37 +20,21 @@ https://desafio-for-leven.herokuapp.com/
 - Banco de dados: Postgresql
 
 
+
 ## Backend
 Pré-requisitos: Java 8
 
+
 ## Operações disponíveis
 
-1. Criar um estudante
+| Método HTTP  / Endpoint |  Descrição  |
+| ------------------- | ------------------- |
+|  POST   /estudantes |  Criar um estudante |
+|  GET   estudantes/:id |  Listar estudante por id |
+|  GET   /estudantes |  Listar todos |
+|  PUT   /estudantes/:id |  Atualizar estudante |
+|  DELETE   /estudantes/:id |  Deletar estudante |
 
-```
-POST /estudantes
-```
-2. Listar estudante por id
-
-```
-GET /estudantes/:id
-```
-
-3. Listar todos
-
-```
-GET /estudantes
-```
-4. Atualizar estudante
-
-```
-PUT /estudantes/:id
-```
-5. Deletar estudante
-
-```
-DELETE /estudantes/:id
-```
 
 
 # Autor
