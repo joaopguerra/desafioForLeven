@@ -1,0 +1,10 @@
+INSERT INTO estudante (nome, sobrenome) values ('Primeiro', 'Estudante');
+INSERT INTO estudante (nome, sobrenome) values ('Estudante', 'Segundo');
+INSERT INTO estudante (nome, sobrenome) values ('Terceiro', 'Estudante');
+INSERT INTO estudante (nome, sobrenome) values ('Estudante', 'Quarto');
+INSERT INTO estudante (nome, sobrenome) values ('Quinto', 'Estudante');
+INSERT INTO estudante (nome, sobrenome) values ('Estudante', 'Sexto');
+INSERT INTO estudante (nome, sobrenome) values ('Sétimo', 'Estudante');
+INSERT INTO estudante (nome, sobrenome) values ('Estudante', 'Oitavo');
+INSERT INTO estudante (nome, sobrenome) values ('Nono', 'Estudante');
+INSERT INTO estudante (nome, sobrenome) values ('Estudante', 'Décimo');

@@ -37,7 +37,10 @@ public class EstudanteController {
     @ResponseStatus(HttpStatus.CREATED)
     public void insert(@Valid @RequestBody EstudanteRequest estudanteRequest, HttpServletResponse response) {
         EstudanteResponse estudanteResponse = service.insert(estudanteRequest);
-        String uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{matricula}").buildAndExpand(estudanteResponse.getMatricula()).toUriString();
+        String uri = ServletUriComponentsBuilder
+                .fromCurrentRequestUri().path("/{matricula}")
+                .buildAndExpand(estudanteResponse.getMatricula())
+                .toUriString();
         response.addHeader("location", uri);
     }
 

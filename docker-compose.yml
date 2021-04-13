@@ -1,0 +1,18 @@
+version: '3'
+services:
+  db:
+    container_name: db_desafio
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: desafio
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - db_desafio:/var/lib/mysql
+
+volumes:
+  db_desafio:

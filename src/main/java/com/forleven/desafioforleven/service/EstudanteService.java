@@ -1,6 +1,6 @@
 package com.forleven.desafioforleven.service;
 
-import com.forleven.desafioforleven.exception.NotFoundException;
+import com.forleven.desafioforleven.exception.EntityNotFound;
 import com.forleven.desafioforleven.model.dto.EstudanteRequest;
 import com.forleven.desafioforleven.model.dto.EstudanteResponse;
 import com.forleven.desafioforleven.model.entity.EstudanteEntity;
@@ -28,30 +28,37 @@ public class EstudanteService {
     public EstudanteResponse findByMatricula(Long matricula) {
         return repository.findById(matricula)
                 .map(EstudanteResponse::valueOf)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new EntityNotFound("Estudante não encontrado"));
     }
 
     public EstudanteResponse insert(EstudanteRequest estudanteRequest) {
-        EstudanteEntity newEstudante = repository.save(EstudanteEntity.valueOf(estudanteRequest));
+        EstudanteEntity estudanteEntity = EstudanteEntity.builder()
+                .nome(estudanteRequest.getNome())
+                .sobrenome(estudanteRequest.getSobrenome())
+                .telefones(estudanteRequest.getTelefones())
+                .build();
+
+        EstudanteEntity newEstudante = repository.save(estudanteEntity);
         return new EstudanteResponse(newEstudante.getId());
     }
 
     public void update(Long matricula, EstudanteRequest estudanteRequest) {
         EstudanteEntity estudanteEntity = repository.findById(matricula)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new EntityNotFound("Estudante não encontrado"));
 
-        estudanteEntity.setNome(estudanteRequest.getNome());
-        estudanteEntity.setSobrenome(estudanteRequest.getSobrenome());
-        estudanteEntity.setTelefones(estudanteRequest.getTelefones());
+        //Fazer da mesma forma que o insert
+        estudanteEntity.builder()
+                .nome(estudanteEntity.getNome())
+                .sobrenome(estudanteEntity.getSobrenome())
+                .telefones(estudanteRequest.getTelefones())
+                .build();
 
         repository.save(estudanteEntity);
     }
 
     public void delete(Long matricula) {
         repository.findById(matricula)
-                .ifPresent(estudanteEntity -> {
-            repository.deleteById(estudanteEntity.getId());
-        });
+                .ifPresent(estudanteEntity -> repository.deleteById(estudanteEntity.getId()));
     }
 
 }

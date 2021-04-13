@@ -1,19 +1,29 @@
 package com.forleven.desafioforleven.model.entity;
 
-import com.forleven.desafioforleven.model.dto.EstudanteRequest;
 import com.forleven.desafioforleven.model.dto.TelefoneDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
-
-import java.io.Serializable;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.util.List;
-import java.util.Objects;
 
 @Entity(name = "estudante")
-public class EstudanteEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class EstudanteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +37,9 @@ public class EstudanteEntity implements Serializable {
     private String sobrenome;
 
     @ElementCollection
-    @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "matricula_estudante"))
     @Fetch(FetchMode.JOIN)
     private List<TelefoneDTO> telefones;
-
-
-    public EstudanteEntity() {
-    }
 
     public EstudanteEntity(String nome, String sobrenome, List<TelefoneDTO> telefones) {
         this.nome = nome;
@@ -41,56 +47,5 @@ public class EstudanteEntity implements Serializable {
         this.telefones = telefones;
     }
 
-    public Long getId() {
 
-        return id;
-    }
-
-    public void setId(Long id) {
-
-        this.id = id;
-    }
-
-    public String getNome() {
-
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
-    public List<TelefoneDTO> getTelefones() {
-        return telefones;
-    }
-
-    public void setTelefones(List<TelefoneDTO> telefones) {
-        this.telefones = telefones;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof EstudanteEntity)) return false;
-        EstudanteEntity estudanteEntity = (EstudanteEntity) o;
-        return getId().equals(estudanteEntity.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
-    public static EstudanteEntity valueOf(EstudanteRequest estudanteRequest){
-        return new EstudanteEntity(estudanteRequest.getNome(),
-                estudanteRequest.getSobrenome(), estudanteRequest.getTelefones());
-    }
 }
