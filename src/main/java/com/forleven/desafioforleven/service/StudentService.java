@@ -1,11 +1,11 @@
 package com.forleven.desafioforleven.service;
 
-import com.forleven.desafioforleven.exception.EntityNotFound;
 import com.forleven.desafioforleven.model.dto.StudentRequest;
 import com.forleven.desafioforleven.model.dto.StudentResponse;
 import com.forleven.desafioforleven.model.entity.Student;
 import com.forleven.desafioforleven.repository.StudentRepository;
 import com.forleven.desafioforleven.specifications.StudentSpecification;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,8 @@ public class StudentService {
     public StudentResponse findById(Long id) {
         return repository.findById(id)
                 .map(StudentResponse::valueOf)
-                .orElseThrow(() -> new EntityNotFound("Student not found"));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
     }
 
     public StudentResponse insert(StudentRequest studentRequest) {
@@ -49,7 +50,7 @@ public class StudentService {
         Optional<Student> student1 = repository.findOne(spec);
 
         if (student1.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Please change registration");
         }
 
         Student newEstudante = repository.save(student);
@@ -63,10 +64,8 @@ public class StudentService {
 
     public void update(Long id, StudentRequest studentRequest) {
         Student student = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFound("Student not found"));
-
-        Specification<Student> spec = StudentSpecification.
-                withRegistration(studentRequest.getRegistration());
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
 
         Student updatedStudent = Student.builder()
                 .id(student.getId())
@@ -80,8 +79,11 @@ public class StudentService {
     }
 
     public void delete(Long id) {
-        repository.findById(id)
-                .ifPresent(student -> repository.deleteById(student.getId()));
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ("Student not found"));
+        }
     }
 
 }
