@@ -1,15 +1,17 @@
-CREATE TABLE IF NOT EXISTS estudante
+CREATE TABLE IF NOT EXISTS student
 (
-    matricula bigint       NOT NULL AUTO_INCREMENT,
-    nome      varchar(100) NOT NULL,
-    sobrenome varchar(100) NOT NULL,
-    PRIMARY KEY (matricula)
+    id           bigint       NOT NULL AUTO_INCREMENT,
+    registration varchar(100) NOT NULL UNIQUE,
+    name         varchar(100) NOT NULL,
+    last_Name    varchar(100) NOT NULL,
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS telefones (
-    id                  bigint       NOT NULL AUTO_INCREMENT,
-    matricula_estudante bigint       NOT NULL,
-    numero              varchar(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS phones
+(
+    id                   bigint       NOT NULL AUTO_INCREMENT,
+    student_id bigint       NOT NULL,
+    number               varchar(100) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (matricula_estudante) REFERENCES estudante (matricula)
+    FOREIGN KEY (student_id) REFERENCES student (id)
 );

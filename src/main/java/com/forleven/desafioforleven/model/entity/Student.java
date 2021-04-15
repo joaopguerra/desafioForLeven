@@ -1,6 +1,5 @@
 package com.forleven.desafioforleven.model.entity;
 
-import com.forleven.desafioforleven.model.dto.TelefoneDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,33 +17,37 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import java.util.List;
 
-@Entity(name = "estudante")
+@Entity(name = "student")
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class EstudanteEntity {
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "matricula")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "nome")
-    private String nome;
+    @Column(name = "registration", unique = true)
+    private String registration;
 
-    @Column(name = "sobrenome")
-    private String sobrenome;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "lastName")
+    private String lastName;
 
     @ElementCollection
-    @CollectionTable(name = "telefones", joinColumns = @JoinColumn(name = "matricula_estudante"))
+    @CollectionTable(name = "phones", joinColumns = @JoinColumn(name = "student_id"))
     @Fetch(FetchMode.JOIN)
-    private List<TelefoneDTO> telefones;
+    private List<Phone> phones;
 
-    public EstudanteEntity(String nome, String sobrenome, List<TelefoneDTO> telefones) {
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.telefones = telefones;
+    public Student(String registration, String name, String lastName, List<Phone> phones) {
+        this.registration = registration;
+        this.name = name;
+        this.lastName = lastName;
+        this.phones = phones;
     }
 
 

@@ -1,4 +1,4 @@
-package com.forleven.desafioforleven.model.dto;
+package com.forleven.desafioforleven.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TelefoneDTO {
+public class Phone {
 
-    @Column(name = "numero")
-    private String numero;
+    @Column(name = "number")
+    private String number;
 
 }
