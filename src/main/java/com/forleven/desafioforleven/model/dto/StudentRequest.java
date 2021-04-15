@@ -1,6 +1,7 @@
 package com.forleven.desafioforleven.model.dto;
 
 import com.forleven.desafioforleven.model.entity.Phone;
+import com.forleven.desafioforleven.model.enums.StudentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -23,6 +24,8 @@ public class StudentRequest {
     @NotBlank(message = "Required field")
     @Size(min = 3)
     private String lastName;
+
+    private StudentEnum status;
 
     private List<Phone> phones;
 

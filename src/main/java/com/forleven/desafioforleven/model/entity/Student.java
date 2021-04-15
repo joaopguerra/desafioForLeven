@@ -1,5 +1,6 @@
 package com.forleven.desafioforleven.model.entity;
 
+import com.forleven.desafioforleven.model.enums.StudentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,15 +39,19 @@ public class Student {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "status")
+    private StudentEnum status;
+
     @ElementCollection
     @CollectionTable(name = "phones", joinColumns = @JoinColumn(name = "student_id"))
     @Fetch(FetchMode.JOIN)
     private List<Phone> phones;
 
-    public Student(String registration, String name, String lastName, List<Phone> phones) {
+    public Student(String registration, String name, String lastName, StudentEnum status, List<Phone> phones) {
         this.registration = registration;
         this.name = name;
         this.lastName = lastName;
+        this.status = status;
         this.phones = phones;
     }
 

@@ -3,6 +3,7 @@ package com.forleven.desafioforleven.tests.service;
 import com.forleven.desafioforleven.model.dto.StudentRequest;
 import com.forleven.desafioforleven.model.dto.StudentResponse;
 import com.forleven.desafioforleven.model.entity.Student;
+import com.forleven.desafioforleven.model.enums.StudentEnum;
 import com.forleven.desafioforleven.repository.StudentRepository;
 import com.forleven.desafioforleven.service.StudentService;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -38,12 +38,14 @@ import static org.mockito.Mockito.when;
     void studentInsertSuccess() {
 
         StudentRequest studentRequest = new StudentRequest("123ABC",
-                "João", "Guerra", null);
+                "João", "Guerra", StudentEnum.ACTIVE, null);
         StudentResponse studentResponse = new StudentResponse(1L, "123ABC",
-                "João", "Guerra", null);
+                "João", "Guerra", StudentEnum.ACTIVE, null);
 
-        Student student = new Student("123ABC", "João", "Guerra", null);
-        Student student1 = new Student(1L, "123ABC", "João", "Guerra", null);
+        Student student = new Student("123ABC", "João", "Guerra",
+                StudentEnum.ACTIVE, null);
+        Student student1 = new Student(1L, "123ABC", "João",
+                "Guerra", StudentEnum.ACTIVE, null);
 
         when(studentRepository.save(student))
                 .thenReturn(student1);
@@ -59,9 +61,10 @@ import static org.mockito.Mockito.when;
     void studentInsertFail() {
 
         StudentRequest studentRequest = new StudentRequest("123ABC",
-                "João", "Guerra", null);
+                "João", "Guerra", StudentEnum.ACTIVE, null);
 
-        Student student = new Student(1L, "123ABC", "João", "Guerra", null);
+        Student student = new Student(1L, "123ABC", "João",
+                "Guerra", StudentEnum.ACTIVE, null);
 
         when(studentRepository.findOne(any(Specification.class)))
                 .thenReturn(Optional.of(student));
@@ -81,9 +84,10 @@ import static org.mockito.Mockito.when;
 
     @Test
     void updateSuccess() {
-        Student student = new Student(1L, "123ABC", "João", "Guerra", null);
+        Student student = new Student(1L, "123ABC", "João",
+                "Guerra", StudentEnum.ACTIVE, null);
         StudentRequest studentRequest = new StudentRequest("123ABC",
-                "João", "Guerra", null);
+                "João", "Guerra", StudentEnum.ACTIVE, null);
 
         ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
 
@@ -103,7 +107,7 @@ import static org.mockito.Mockito.when;
      @Test
      void updateFail() {
          StudentRequest studentRequest = new StudentRequest("123ABC",
-                 "João", "Guerra", null);
+                 "João", "Guerra", StudentEnum.ACTIVE, null);
 
          doThrow(ResponseStatusException.class)
                  .when(studentRepository)
@@ -119,14 +123,16 @@ import static org.mockito.Mockito.when;
 
     @Test
     void deleteSuccess() {
+        Student student = new Student(1L, "123ABC", "João",
+                "Guerra", StudentEnum.ACTIVE, null);
 
-        doNothing().when(studentRepository).deleteById(1L);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
 
-        Assertions.assertDoesNotThrow(() -> {
-            studentService.delete(1L);
-        });
+        studentService.delete(1L);
+        verify(studentRepository, times(1)).findById(1L);
 
-        verify(studentRepository, times(1)).deleteById(1L);
+        Assertions.assertEquals(StudentEnum.DELETED, student.getStatus());
+
     }
 
     @Test
@@ -134,13 +140,13 @@ import static org.mockito.Mockito.when;
 
         doThrow(ResponseStatusException.class)
                 .when(studentRepository)
-                .deleteById(1000L);
+                .findById(1000L);
 
         Assertions.assertThrows(ResponseStatusException.class, () -> {
             studentService.delete(1000L);
         });
 
-        verify(studentRepository, times(1)).deleteById(1000L);
+        verify(studentRepository, times(1)).findById(1000L);
     }
 
 }
